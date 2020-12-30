@@ -59,10 +59,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:text="Iniciar Sesión" />
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Regístrate " />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

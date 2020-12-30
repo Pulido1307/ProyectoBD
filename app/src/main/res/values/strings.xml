@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Registro de deudores</string>
+    <string name="lista_de_deudas">Lista de deudas</string>
 </resources>
