@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/todo"
         android:focusable="true" />
 
 

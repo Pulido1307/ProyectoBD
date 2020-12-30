@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Id Cliente: "
+        android:text="@string/id_cliente"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -23,7 +23,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Nombre: "
+        android:text="@string/nombre_t"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -35,7 +35,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Apellidos: "
+        android:text="@string/apellidos_t"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -47,7 +47,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Saldo de la deuda: "
+        android:text="@string/saldo_de_la_deuda"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -59,7 +59,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Fecha de la ultima compra: "
+        android:text="@string/fecha_de_la_ultima_compra"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -71,7 +71,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:text="Observaciones: "
+        android:text="@string/observaciones_t"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -85,5 +85,5 @@
         android:layout_marginBottom="20dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="Cerrar" />
+        android:text="@string/cerrar" />
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
-        android:text="Saldo de la deuda: "
+        android:text="@string/saldo_de_la_deuda"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -25,14 +25,15 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:ems="10"
-        android:hint="Saldo a sumar o abonar"
-        android:inputType="numberDecimal" />
+        android:hint="@string/saldo_a_sumar_o_abonar"
+        android:inputType="numberDecimal"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Abonar al saldo deudor"
+        android:text="@string/abonar_al_saldo_deudor"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
@@ -42,7 +43,7 @@
         android:id="@+id/button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sumar al saldo deudor"
+        android:text="@string/sumar_al_saldo_deudor"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
@@ -52,7 +53,7 @@
         android:id="@+id/button5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salir"
+        android:text="@string/salir"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"

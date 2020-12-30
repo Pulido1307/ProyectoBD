@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -21,7 +21,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="5dp"
-                android:text="ID:"
+                android:text="@string/id"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -34,8 +34,9 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
-                android:hint="Ingresa el nombre"
-                android:inputType="textPersonName" />
+                android:hint="@string/ingresa_el_nombre"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText_Apellidos_deudor"
@@ -46,8 +47,9 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
-                android:hint="Ingresa los apellidos"
-                android:inputType="textPersonName" />
+                android:hint="@string/ingresa_los_apellidos"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editText_saldo_deudor"
@@ -58,8 +60,9 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
-                android:hint="Monto de la deuda"
-                android:inputType="numberDecimal" />
+                android:hint="@string/monto_de_la_deuda"
+                android:inputType="numberDecimal"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editTextTextMultiLine"
@@ -71,8 +74,9 @@
                 android:layout_marginBottom="10dp"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Indique las observaciones"
-                android:inputType="textMultiLine" />
+                android:hint="@string/indique_las_observaciones"
+                android:inputType="textMultiLine"
+                android:importantForAutofill="no" />
 
             <Button
                 android:id="@+id/button2"
@@ -84,7 +88,7 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Actualizar" />
+                android:text="@string/actualizar" />
 
             <Button
                 android:id="@+id/button"
@@ -96,7 +100,7 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Eliminar" />
+                android:text="@string/eliminar" />
 
             <Button
                 android:id="@+id/button_salir"
@@ -108,7 +112,7 @@
                 android:layout_marginBottom="15dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Salir" />
+                android:text="@string/salir" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
