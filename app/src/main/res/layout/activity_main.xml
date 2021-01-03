@@ -36,7 +36,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/editText_Apellidos_deudor"
+                android:id="@+id/editText_username_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
                 android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/editText_pass_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

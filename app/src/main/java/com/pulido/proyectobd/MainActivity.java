@@ -18,18 +18,26 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.pulido.proyectobd.Helpers.Constantes;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
     private Button button_login;
     private Button button_singup;
-    private ProgressDialog progressDialog;
-    private RequestQueue requestQueue;
+    private ProgressDialog progressDialogSign;
+    private RequestQueue requestQueueSign;
     private JsonObjectRequest jsonObjectRequest;
-    private boolean ocultarD;
+    private EditText editText_username_login;
+    private EditText editText_pass_login;
+    private ProgressDialog progressDialogLogin;
+    private RequestQueue requestQueueLogin;
+    private JSONArray jsonArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +46,21 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         button_login = findViewById(R.id.button_login);
         button_singup = findViewById(R.id.button_singup);
-        requestQueue = Volley.newRequestQueue(MainActivity.this);
+        editText_pass_login = findViewById(R.id.editText_pass_login);
+        editText_username_login = findViewById(R.id.editText_username_login);
+        requestQueueSign = Volley.newRequestQueue(MainActivity.this);
 
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent intent = new Intent(MainActivity.this,CrudActivity.class);
-                 startActivity(intent);
-                 finish();
+
             }
         });
 
         button_singup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               showDialogSingUp();
+                showDialogSingUp();
             }
         });
     }
@@ -118,21 +126,18 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 }
 
                 if(flag_usuario && flag_clave && flag_pass){
-                    progressDialog = new ProgressDialog(MainActivity.this);
-                    progressDialog.setMessage("Cargando...");
-                    progressDialog.show();
+                    progressDialogSign = new ProgressDialog(MainActivity.this);
+                    progressDialogSign.setMessage("Cargando...");
+                    progressDialogSign.show();
                     String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/signup.php?username="+editText_usuario_sign.getText().toString()+
                             "&pass="+editText_pass_sign.getText().toString();
                     url = url.replace(" ","%20");
 
                     jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,MainActivity.this,MainActivity.this);
-                    requestQueue.add(jsonObjectRequest);
+                    requestQueueSign.add(jsonObjectRequest);
 
-                    if(ocultarD){
-                        dialog.dismiss();
-                    }else {
-                        Toast.makeText(MainActivity.this, "Ocurrio un error favor de revisar datos y volver a intenar",Toast.LENGTH_SHORT).show();
-                    }
+                    dialog.dismiss();
+
                 }else {
                     Toast.makeText(MainActivity.this, "Algunos campos son inválidos",Toast.LENGTH_SHORT).show();
                 }
@@ -140,19 +145,16 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         });
     }
 
-
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(MainActivity.this,"Error en la bd", Toast.LENGTH_SHORT).show();
-        progressDialog.hide();
+        progressDialogSign.hide();
         Log.i("ERROR", error.toString());
-        ocultarD = false;
     }
 
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(MainActivity.this,"Registro Guardado", Toast.LENGTH_SHORT).show();
-        progressDialog.hide();
-        ocultarD = true;
+        progressDialogSign.hide();
     }
 }
