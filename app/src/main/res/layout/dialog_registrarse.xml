@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editText_usuario_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -18,7 +18,7 @@
         android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/editText_pass_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -31,7 +31,7 @@
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/editText_confirm_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -44,7 +44,7 @@
         android:importantForAutofill="no" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editText_clave_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -57,7 +57,7 @@
         android:importantForAutofill="no" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/button_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -67,7 +67,7 @@
         android:text="@string/registrar" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/button_cancelar_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

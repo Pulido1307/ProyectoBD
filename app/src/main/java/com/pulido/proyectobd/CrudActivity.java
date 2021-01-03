@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,13 +61,27 @@ public class CrudActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
-        View view =inflater.inflate(R.layout.dialog_consultar, null);
-        builder.setView(view).setTitle("Información del cliente");
-
+        View view =inflater.inflate(R.layout.dialog_registrarse, null);
+        builder.setView(view).setTitle("Registrar usuario");
 
         final AlertDialog dialog = builder.create();
-
+        dialog.setCancelable(false);
         dialog.show();
+
+        final EditText editText_usuario_sign = dialog.findViewById(R.id.editText_usuario_sign);
+        final EditText editText_pass_sign = dialog.findViewById(R.id.editText_pass_sign);
+        final EditText editText_confirm_sign = dialog.findViewById(R.id.editText_confirm_sign);
+        final EditText editText_clave_sign = dialog.findViewById(R.id.editText_clave_sign);
+        final Button button_sign = dialog.findViewById(R.id.button_sign);
+        final Button button_cancelar_sign = dialog.findViewById(R.id.button_cancelar_sign);
+
+        button_cancelar_sign.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
 
     }
 

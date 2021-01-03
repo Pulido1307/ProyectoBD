@@ -19,12 +19,12 @@
     <string name="fecha_de_la_ultima_compra">Fecha de la ultima compra:</string>
     <string name="observaciones_t">Observaciones:</string>
     <string name="cerrar">Cerrar</string>
-    <string name="saldo_de_la_deuda">Saldo de la deuda:</string>
+
     <string name="saldo_a_sumar_o_abonar">Saldo a sumar o abonar</string>
     <string name="abonar_al_saldo_deudor">Abonar al saldo deudor</string>
     <string name="sumar_al_saldo_deudor">Sumar al saldo deudor</string>
-    <string name="salir">Salir</string>
-    <string name="usuario">Usuario</string>
+
+
     <string name="confirmar_contrase_a">Confirmar contraseña</string>
     <string name="clave_de_registro">Clave de registro</string>
     <string name="registrar">Registrar</string>
@@ -32,11 +32,11 @@
     <string name="ingresa_los_apellidos">Ingresa los apellidos</string>
     <string name="ingresa_el_nombre">Ingresa el nombre</string>
     <string name="id">ID:</string>
-    <string name="monto_de_la_deuda">Monto de la deuda</string>
+
     <string name="indique_las_observaciones">Indique las observaciones</string>
     <string name="actualizar">Actualizar</string>
     <string name="eliminar">Eliminar</string>
-    <string name="salir">Salir</string>
+
     <string name="actualizar_datos">Actualizar datos</string>
     <string name="consultar_informaci_n">Consultar información</string>
     <string name="abonos_o_incrementos">Abonos o incrementos</string>
