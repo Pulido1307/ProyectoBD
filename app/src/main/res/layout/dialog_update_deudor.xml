@@ -25,61 +25,79 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/editText_nombre_deudor"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_nombre_update"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="@string/ingresa_el_nombre"
-                android:inputType="textPersonName"
-                android:importantForAutofill="no" />
+                android:layout_marginBottom="5dp"
+                android:hint="@string/ingresa_el_nombre">
 
-            <EditText
-                android:id="@+id/editText_Apellidos_deudor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="@string/ingresa_los_apellidos"
-                android:inputType="textPersonName"
-                android:importantForAutofill="no" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:maxLength="75" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/editText_saldo_deudor"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_apellidos_update"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:hint="@string/monto_de_la_deuda"
-                android:inputType="numberDecimal"
-                android:importantForAutofill="no" />
+                android:layout_marginBottom="5dp"
+                android:hint="@string/apellidos">
 
-            <EditText
-                android:id="@+id/editTextTextMultiLine"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:maxLength="75" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_monto_update"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="@string/indique_las_observaciones"
-                android:inputType="textMultiLine"
-                android:importantForAutofill="no" />
+                android:hint="@string/monto_de_la_deuda">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_observaciones_update"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/observaciones">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button_add_deudor"
+                android:id="@+id/button_add_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -88,31 +106,20 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/actualizar" />
+                android:text="@string/add" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_salir_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/eliminar" />
-
-            <Button
-                android:id="@+id/button_salir_deudor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="15dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/salir" />
+
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

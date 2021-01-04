@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_Actualizar"
+        android:id="@+id/button_Actualizar_opc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -14,20 +14,21 @@
         android:text="@string/actualizar_datos" />
 
     <Button
-        android:id="@+id/button_abonos"
+        android:id="@+id/button_abonos_opc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:text="@string/abonos_o_incrementos" />
+
     <Button
-        android:id="@+id/button_consultar"
+        android:id="@+id/button_consultar_opc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/consultar_informaci_n" />

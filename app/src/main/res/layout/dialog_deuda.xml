@@ -16,46 +16,50 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/editTextNumberDecimal"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:hint="@string/saldo_a_sumar_o_abonar"
-        android:inputType="numberDecimal"
-        android:importantForAutofill="no" />
+        android:hint="@string/saldo_a_sumar_o_abonar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/abonar_al_saldo_deudor"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="5dp"
+        android:text="@string/abonar_al_saldo_deudor" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sumar_al_saldo_deudor"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="5dp"
+        android:text="@string/sumar_al_saldo_deudor" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/salir"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:text="@string/salir" />
+
 </LinearLayout>
