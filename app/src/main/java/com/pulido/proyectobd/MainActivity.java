@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
 import com.pulido.proyectobd.Helpers.Constantes;
 
 import org.json.JSONArray;
@@ -32,12 +34,11 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     private ProgressDialog progressDialogSign;
     private RequestQueue requestQueueSign;
     private JsonObjectRequest jsonObjectRequest;
-    private EditText editText_username_login;
-    private EditText editText_pass_login;
     private ProgressDialog progressDialogLogin;
     private RequestQueue requestQueueLogin;
     private JSONArray jsonArray;
-
+    private TextInputLayout textInput_username_login;
+    private TextInputLayout textInput_pass_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +47,35 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         button_login = findViewById(R.id.button_login);
         button_singup = findViewById(R.id.button_singup);
-        editText_pass_login = findViewById(R.id.editText_pass_login);
-        editText_username_login = findViewById(R.id.editText_username_login);
+        textInput_username_login = findViewById(R.id.textInput_username_login);
+        textInput_pass_login = findViewById(R.id.textInput_pass_login);
         requestQueueSign = Volley.newRequestQueue(MainActivity.this);
 
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean flag_usuario = false;
+                boolean flag_pass = false;
+                textInput_username_login.setError(null);
+                textInput_pass_login.setError(null);
 
+                if(!textInput_username_login.getEditText().getText().toString().isEmpty()){
+                    flag_usuario = true;
+                }else {
+                    textInput_username_login.setError("Campo requerido");
+                }
+
+                if(!textInput_pass_login.getEditText().getText().toString().isEmpty()){
+                    flag_pass = true;
+                }else {
+                    textInput_pass_login.setError("Campo requerido");
+                }
+
+                if(flag_usuario && flag_pass){
+                    login();
+                }else {
+                    Toast.makeText(MainActivity.this, "Algunos campos son inválidos",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -63,6 +85,59 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 showDialogSingUp();
             }
         });
+    }
+
+    private void login(){
+        progressDialogLogin = new ProgressDialog(MainActivity.this);
+        progressDialogLogin.setMessage("Cargando...");
+        progressDialogLogin.show();
+
+        requestQueueLogin = Volley.newRequestQueue(MainActivity.this);
+        String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/login.php?username="+textInput_username_login.getEditText().getText().toString().trim();
+        StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String password = jsonArray.getString(0);
+
+                    if (textInput_pass_login.getEditText().getText().toString().equals(password)) {
+                        Toast.makeText(MainActivity.this, "Bienvenid@ " + textInput_username_login.getEditText().getText().toString(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, CrudActivity.class);
+                        startActivity(intent);
+                        finish();
+                        progressDialogLogin.hide();
+                    } else {
+                        progressDialogLogin.hide();
+                        showInformationDialog();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    showInformationDialog();
+                    progressDialogLogin.hide();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueueLogin.add(respuesta);
+    }
+
+    private void showInformationDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Inicio de sesión denegado").
+                setMessage("Usuario o contraseña erróneos").
+                setNegativeButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
     }
 
     private void showDialogSingUp() {
@@ -76,10 +151,10 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         dialog.setCancelable(false);
         dialog.show();
 
-        final EditText editText_usuario_sign = dialog.findViewById(R.id.editText_usuario_sign);
-        final EditText editText_pass_sign = dialog.findViewById(R.id.editText_pass_sign);
-        final EditText editText_confirm_sign = dialog.findViewById(R.id.editText_confirm_sign);
-        final EditText editText_clave_sign = dialog.findViewById(R.id.editText_clave_sign);
+        final TextInputLayout textInputLayout_usuario_sign = dialog.findViewById(R.id.textInputLayout_usuario_sign);
+        final TextInputLayout textInputLayout_pass_sign = dialog.findViewById(R.id.textInputLayout_pass_sign);
+        final TextInputLayout textInputLayout_confirm_sign = dialog.findViewById(R.id.textInputLayout_confirm_sign);
+        final TextInputLayout textInputLayout_clave_sign = dialog.findViewById(R.id.textInputLayout_clave_sign);
         final Button button_sign = dialog.findViewById(R.id.button_sign);
         final Button button_cancelar_sign = dialog.findViewById(R.id.button_cancelar_sign);
 
@@ -96,41 +171,41 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                 boolean flag_usuario = false;
                 boolean flag_pass = false;
                 boolean flag_clave = false;
-                editText_usuario_sign.setError(null);
-                editText_pass_sign.setError(null);
-                editText_confirm_sign.setError(null);
-                editText_clave_sign.setError(null);
+                textInputLayout_usuario_sign.setError(null);
+                textInputLayout_pass_sign.setError(null);
+                textInputLayout_confirm_sign.setError(null);
+                textInputLayout_clave_sign.setError(null);
 
-                if(!editText_usuario_sign.getText().toString().isEmpty()){
+                if(!textInputLayout_usuario_sign.getEditText().getText().toString().isEmpty()){
                     flag_usuario = true;
                 }else {
-                    editText_usuario_sign.setError("Campo requerido");
+                    textInputLayout_usuario_sign.setError("Campo requerido");
                 }
 
-                if( !editText_pass_sign.getText().toString().isEmpty() && !editText_confirm_sign.getText().toString().isEmpty()){
-                    if (editText_pass_sign.getText().toString().equals(editText_confirm_sign.getText().toString())){
+                if( !textInputLayout_pass_sign.getEditText().getText().toString().isEmpty() && !textInputLayout_confirm_sign.getEditText().getText().toString().isEmpty()){
+                    if (textInputLayout_pass_sign.getEditText().getText().toString().equals(textInputLayout_confirm_sign.getEditText().getText().toString())){
                         flag_pass = true;
                     }else {
-                        editText_pass_sign.setError("La contraseñas ingresadas deben de ser iguales");
-                        editText_confirm_sign.setError("La contraseñas ingresadas deben de ser iguales");
+                        textInputLayout_pass_sign.setError("La contraseñas ingresadas deben de ser iguales");
+                        textInputLayout_confirm_sign.setError("La contraseñas ingresadas deben de ser iguales");
                     }
                 }else {
-                    editText_pass_sign.setError("Campo requerido");
-                    editText_confirm_sign.setError("Campo requerido");
+                    textInputLayout_pass_sign.setError("Campo requerido");
+                    textInputLayout_confirm_sign.setError("Campo requerido");
                 }
 
-                if(editText_clave_sign.getText().toString().equals(Constantes.CLAVE)){
+                if(textInputLayout_clave_sign.getEditText().getText().toString().equals(Constantes.CLAVE)){
                     flag_clave = true;
                 }else{
-                    editText_clave_sign.setError("La clave es distinta a la requerida, favor de comunicarse con los administradores");
+                    textInputLayout_clave_sign.setError("La clave es distinta a la requerida, favor de comunicarse con los administradores");
                 }
 
                 if(flag_usuario && flag_clave && flag_pass){
                     progressDialogSign = new ProgressDialog(MainActivity.this);
                     progressDialogSign.setMessage("Cargando...");
                     progressDialogSign.show();
-                    String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/signup.php?username="+editText_usuario_sign.getText().toString()+
-                            "&pass="+editText_pass_sign.getText().toString();
+                    String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/signup.php?username="+textInputLayout_usuario_sign.getEditText().getText().toString()+
+                            "&pass="+textInputLayout_pass_sign.getEditText().getText().toString();
                     url = url.replace(" ","%20");
 
                     jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,MainActivity.this,MainActivity.this);

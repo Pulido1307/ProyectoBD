@@ -1,60 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editText_usuario_sign"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_usuario_sign"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:hint="@string/usuario"
-        android:inputType="textPersonName"
-        android:importantForAutofill="no" />
+        android:hint="@string/usuario">
 
-    <EditText
-        android:id="@+id/editText_pass_sign"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_pass_sign"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:ems="10"
         android:hint="@string/password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword" />
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:passwordToggleDrawable="@android:drawable/ic_menu_view"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/purple_700">
 
-    <EditText
-        android:id="@+id/editText_confirm_sign"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_confirm_sign"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:ems="10"
         android:hint="@string/confirmar_contrase_a"
-        android:inputType="textPassword"
-        android:importantForAutofill="no" />
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:passwordToggleDrawable="@android:drawable/ic_menu_view"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/purple_700">
 
-    <EditText
-        android:id="@+id/editText_clave_sign"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_clave_sign"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:hint="@string/clave_de_registro"
-        android:inputType="textPersonName"
-        android:importantForAutofill="no" />
+        android:hint="@string/clave_de_registro">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button_sign"
@@ -63,7 +93,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/registrar" />
 
     <Button
@@ -71,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
         android:text="@string/cancelar" />
