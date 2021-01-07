@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.pulido.proyectobd.Helpers.Constantes;
 import com.pulido.proyectobd.Modelos.Deudor;
@@ -39,16 +36,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class CrudActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
     private FloatingActionButton floatingActionButton_add;
     private ListView listView_deudas;
     private ArrayAdapter arrayAdapterListView;
     private ArrayList<String> listaImprimir = new ArrayList<>();
-    private ProgressDialog progressDialogRegistrar;
+    private ProgressDialog progressDialog;
     private JsonObjectRequest jsonObjectRequestCreate;
-    private RequestQueue requestQueueCreate;
+    private RequestQueue requestQueue;
     private ArrayList<Deudor> listaDeudores = new ArrayList<>();
 
     @Override
@@ -102,6 +98,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
             @Override
             public void onClick(View view) {
                 showDialogUpdateDeleteDeudor(deudor, position);
+                dialog.dismiss();
             }
         });
 
@@ -109,6 +106,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
             @Override
             public void onClick(View view) {
                 showDialogConsultarDeudor(deudor, position);
+                dialog.dismiss();
             }
         });
 
@@ -116,6 +114,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
             @Override
             public void onClick(View view) {
                 showDialogAbonar(deudor, position);
+                dialog.dismiss();
             }
         });
     }
@@ -157,7 +156,83 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
 
     private void showDialogUpdateDeleteDeudor(Deudor deudor, int position)
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
 
+        View view =inflater.inflate(R.layout.dialog_update_deudor, null);
+        builder.setView(view).setTitle("Actualizar y eliminar deudor");
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final TextView textView_IdDeudor = dialog.findViewById(R.id.textView_idCliente_update);
+        final TextInputLayout textInputLayout_nombre_deudor = dialog.findViewById(R.id.textInputLayout_nombre_update);
+        final TextInputLayout textInputLayout_apellidos_deudor = dialog.findViewById(R.id.textInputLayout_apellidos_update);
+        final TextInputLayout textInputLayout_monto_deudor = dialog.findViewById(R.id.textInputLayout_monto_update);
+        final TextInputLayout textInputLayout_observaciones_deudor = dialog.findViewById(R.id.textInputLayout_observaciones_update);
+        final Button button_actualizar_deudor = dialog.findViewById(R.id.button_actualizar_update);
+        final Button button_eliminar_deudor = dialog.findViewById(R.id.button_eliminar_update);
+        final Button button_salir = dialog.findViewById(R.id.button_salir_update);
+
+        textView_IdDeudor.setText(textView_IdDeudor.getText()+" "+deudor.getIdDeudor());
+        textInputLayout_nombre_deudor.getEditText().setText(deudor.getNombre());
+        textInputLayout_apellidos_deudor.getEditText().setText(deudor.getApellidos());
+        textInputLayout_monto_deudor.getEditText().setText(String.valueOf(deudor.getSaldoDeudor()));
+        textInputLayout_observaciones_deudor.getEditText().setText(deudor.getObservaciones());
+
+        button_actualizar_deudor.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        button_eliminar_deudor.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                progressDialog= new ProgressDialog(CrudActivity.this);
+                progressDialog.setMessage("Eliminando...");
+                progressDialog.show();
+
+                String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/baja.php?IdDeudor="+deudor.getIdDeudor();
+                StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            if(response.trim().equals("Eliminado"))
+                            {
+                                dialog.dismiss();
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "¡Se ha eliminado con exito el deudor!", Toast.LENGTH_SHORT).show();
+                                obtenerDatosBD();
+                            }
+                            else
+                            {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+                requestQueue.add(respuesta);
+            }
+        });
+
+        button_salir.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void showDialogAbonar(Deudor deudor, int position)
@@ -228,10 +303,10 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
                 }
 
                 if(flag_nombre && flag_apellidos && flag_monto){
-                    requestQueueCreate = Volley.newRequestQueue(CrudActivity.this);
-                    progressDialogRegistrar= new ProgressDialog(CrudActivity.this);
-                    progressDialogRegistrar.setMessage("Registrando...");
-                    progressDialogRegistrar.show();
+                    requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                    progressDialog= new ProgressDialog(CrudActivity.this);
+                    progressDialog.setMessage("Registrando...");
+                    progressDialog.show();
 
                     String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/alta.php?Nombre="+textInputLayout_nombre_deudor.getEditText().getText().toString()+
                             "&Apellidos="+textInputLayout_apellidos_deudor.getEditText().getText().toString()+"&SaldoDeudor="+textInputLayout_monto_deudor.getEditText().getText().toString()+
@@ -239,7 +314,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
 
                     url = url.replace(" ","%20");
                     jsonObjectRequestCreate = new JsonObjectRequest(Request.Method.GET,url,null,CrudActivity.this,CrudActivity.this);
-                    requestQueueCreate.add(jsonObjectRequestCreate);
+                    requestQueue.add(jsonObjectRequestCreate);
                     dialog.dismiss();
                 }else {
                     Toast.makeText(CrudActivity.this, "Algunos campos son inválidos",Toast.LENGTH_SHORT).show();
@@ -260,19 +335,19 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(CrudActivity.this,"Error en la bd "+ error.toString(), Toast.LENGTH_SHORT).show();
-        progressDialogRegistrar.hide();
+        progressDialog.hide();
         Log.i("ERROR", error.toString());
     }
 
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(CrudActivity.this,"Deuda registrada", Toast.LENGTH_SHORT).show();
-        progressDialogRegistrar.hide();
+        progressDialog.hide();
     }
 
     private void obtenerDatosBD()
     {
-        requestQueueCreate = Volley.newRequestQueue(CrudActivity.this);
+        requestQueue = Volley.newRequestQueue(CrudActivity.this);
         String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/readAll.php";
         StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -290,7 +365,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
 
             }
         });
-        requestQueueCreate.add(respuesta);
+        requestQueue.add(respuesta);
     }
 
     private void llenarListaDeudores(JSONArray jsonArray) throws JSONException {
