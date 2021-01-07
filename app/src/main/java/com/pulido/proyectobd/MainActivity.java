@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
     @Override
     public void onResponse(JSONObject response) {
-        Toast.makeText(MainActivity.this,"Registro Guardado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this,"Registro guardado", Toast.LENGTH_SHORT).show();
         progressDialogSign.hide();
     }
 }

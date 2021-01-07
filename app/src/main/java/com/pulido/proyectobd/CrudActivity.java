@@ -1,6 +1,7 @@
 package com.pulido.proyectobd;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -9,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
     private ArrayAdapter arrayAdapterListView;
     private ArrayList<String> listaImprimir = new ArrayList<>();
     private ProgressDialog progressDialog;
-    private JsonObjectRequest jsonObjectRequestCreate;
+    private JsonObjectRequest jsonObjectRequest;
     private RequestQueue requestQueue;
     private ArrayList<Deudor> listaDeudores = new ArrayList<>();
 
@@ -184,7 +187,81 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
         button_actualizar_deudor.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean flag_nombre = false;
+                boolean flag_apellidos = false;
+                boolean flag_monto = false;
+                String observaciones = "";
 
+                textInputLayout_nombre_deudor.setError(null);
+                textInputLayout_apellidos_deudor.setError(null);
+                textInputLayout_nombre_deudor.setError(null);
+                textInputLayout_observaciones_deudor.setError(null);
+
+                if(!textInputLayout_nombre_deudor.getEditText().getText().toString().isEmpty()){
+                    flag_nombre = true;
+                }else {
+                    textInputLayout_nombre_deudor.setError("Campo requerido");
+                }
+
+                if(!textInputLayout_apellidos_deudor.getEditText().getText().toString().isEmpty()){
+                    flag_apellidos = true;
+                }else {
+                    textInputLayout_apellidos_deudor.setError("Campo requerido");
+                }
+
+                if(!textInputLayout_monto_deudor.getEditText().getText().toString().isEmpty()){
+                    flag_monto = true;
+                }else {
+                    textInputLayout_monto_deudor.setError("Campo requerido");
+                }
+
+                if(!textInputLayout_observaciones_deudor.getEditText().getText().toString().isEmpty()){
+                    observaciones = textInputLayout_observaciones_deudor.getEditText().getText().toString();
+                }else {
+                    observaciones = "Sin observaciones";
+                }
+
+                if(flag_nombre && flag_apellidos && flag_monto){
+                    requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                    progressDialog= new ProgressDialog(CrudActivity.this);
+                    progressDialog.setMessage("Actualizando...");
+                    progressDialog.show();
+
+                    String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/actualizar.php?IdDeudor="+deudor.getIdDeudor()+"&Nombre="+textInputLayout_nombre_deudor.getEditText().getText().toString()+
+                            "&Apellidos="+textInputLayout_apellidos_deudor.getEditText().getText().toString()+"&SaldoDeudor="+textInputLayout_monto_deudor.getEditText().getText().toString()+
+                            "&FechaUltimaCompra="+ Constantes.obtenerFecha()+"&Observaciones="+observaciones;
+
+                    StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.e("Response", response);
+                                if(response.equals("deudor modificado"))
+                                {
+                                    dialog.dismiss();
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "¡Se ha actualizado con exito el deudor!", Toast.LENGTH_SHORT).show();
+                                    obtenerDatosBD();
+                                }
+                                else
+                                {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actualizado el deudor!", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    requestQueue.add(respuesta);
+                }else {
+                    Toast.makeText(CrudActivity.this, "Algunos campos son inválidos",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -220,7 +297,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 requestQueue.add(respuesta);
@@ -313,35 +390,95 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
                             "&FechaUltimaCompra="+ Constantes.obtenerFecha()+"&Observaciones="+observaciones;
 
                     url = url.replace(" ","%20");
-                    jsonObjectRequestCreate = new JsonObjectRequest(Request.Method.GET,url,null,CrudActivity.this,CrudActivity.this);
-                    requestQueue.add(jsonObjectRequestCreate);
+                    jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,CrudActivity.this,CrudActivity.this);
+                    requestQueue.add(jsonObjectRequest);
                     dialog.dismiss();
                 }else {
                     Toast.makeText(CrudActivity.this, "Algunos campos son inválidos",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.options,menu);
+        MenuItem menuItem = menu.findItem(R.id.app_bar_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setQueryHint("Id de deudor a buscar");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                progressDialog= new ProgressDialog(CrudActivity.this);
+                progressDialog.setMessage("Buscando...");
+                progressDialog.show();
+                requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/buscar.php?IdDeudor="+searchView.getQuery().toString();
+                StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Response", response);
+                       try {
+                            JSONObject object = new JSONObject(response);
+                            JSONArray resultados = new JSONArray(object.get("resultados").toString());
+                            if(resultados.getJSONObject(0).getString("message").equals("Si retorna"))
+                            {
+                                JSONArray deudor = new JSONArray(object.get("deudor").toString());
+                                llenarListaDeudores(deudor);
+                                progressDialog.dismiss();
+                            }
+                            else
+                            {
+                                Toast.makeText(CrudActivity.this,"No existe un deudor con ese Id", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CrudActivity.this,"Error al buscar los datos de la bd", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                requestQueue.add(respuesta);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(searchView.getQuery().toString().isEmpty())
+                {
+                    obtenerDatosBD();
+                }
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(CrudActivity.this,"Error en la bd "+ error.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(CrudActivity.this,"Error en la bd"+ error.toString(), Toast.LENGTH_SHORT).show();
         progressDialog.hide();
         Log.i("ERROR", error.toString());
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        Toast.makeText(CrudActivity.this,"Deuda registrada", Toast.LENGTH_SHORT).show();
+        Log.e("JSONObject: ", response.toString());
+        try {
+            if(response.getString("mensaje").equals("deudor creado"))
+            {
+                Toast.makeText(CrudActivity.this,"Deuda registrada", Toast.LENGTH_SHORT).show();
+                obtenerDatosBD();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         progressDialog.hide();
     }
 
@@ -362,7 +499,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(CrudActivity.this,"Error al cargar los datos de la bd", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(respuesta);
