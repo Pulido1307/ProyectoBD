@@ -106,7 +106,7 @@
                 android:layout_marginBottom="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/add" />
+                android:text="@string/actualizar" />
 
             <Button
                 android:id="@+id/button_salir_update"

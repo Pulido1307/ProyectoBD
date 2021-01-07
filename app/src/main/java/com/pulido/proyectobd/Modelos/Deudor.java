@@ -8,6 +8,17 @@ public class Deudor {
     private String FechaUltimaCompra;
     private String Observaciones;
 
+    public Deudor(){};
+
+    public Deudor(int idDeudor, String nombre, String apellidos, double saldoDeudor, String fechaUltimaCompra, String observaciones) {
+        IdDeudor = idDeudor;
+        Nombre = nombre;
+        Apellidos = apellidos;
+        SaldoDeudor = saldoDeudor;
+        FechaUltimaCompra = fechaUltimaCompra;
+        Observaciones = observaciones;
+    }
+
     public int getIdDeudor() {
         return IdDeudor;
     }
