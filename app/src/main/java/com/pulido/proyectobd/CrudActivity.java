@@ -5,6 +5,8 @@ import androidx.core.view.MenuItemCompat;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -116,7 +118,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
         button_abonar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogAbonar(deudor, position);
+                showDialogAbonar(deudor);
                 dialog.dismiss();
             }
         });
@@ -165,18 +167,18 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
         View view =inflater.inflate(R.layout.dialog_update_deudor, null);
         builder.setView(view).setTitle("Actualizar y eliminar deudor");
 
-        final AlertDialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.show();
+        final AlertDialog dialogUD = builder.create();
+        dialogUD.setCancelable(false);
+        dialogUD.show();
 
-        final TextView textView_IdDeudor = dialog.findViewById(R.id.textView_idCliente_update);
-        final TextInputLayout textInputLayout_nombre_deudor = dialog.findViewById(R.id.textInputLayout_nombre_update);
-        final TextInputLayout textInputLayout_apellidos_deudor = dialog.findViewById(R.id.textInputLayout_apellidos_update);
-        final TextInputLayout textInputLayout_monto_deudor = dialog.findViewById(R.id.textInputLayout_monto_update);
-        final TextInputLayout textInputLayout_observaciones_deudor = dialog.findViewById(R.id.textInputLayout_observaciones_update);
-        final Button button_actualizar_deudor = dialog.findViewById(R.id.button_actualizar_update);
-        final Button button_eliminar_deudor = dialog.findViewById(R.id.button_eliminar_update);
-        final Button button_salir = dialog.findViewById(R.id.button_salir_update);
+        final TextView textView_IdDeudor = dialogUD.findViewById(R.id.textView_idCliente_update);
+        final TextInputLayout textInputLayout_nombre_deudor = dialogUD.findViewById(R.id.textInputLayout_nombre_update);
+        final TextInputLayout textInputLayout_apellidos_deudor = dialogUD.findViewById(R.id.textInputLayout_apellidos_update);
+        final TextInputLayout textInputLayout_monto_deudor = dialogUD.findViewById(R.id.textInputLayout_monto_update);
+        final TextInputLayout textInputLayout_observaciones_deudor = dialogUD.findViewById(R.id.textInputLayout_observaciones_update);
+        final Button button_actualizar_deudor = dialogUD.findViewById(R.id.button_actualizar_update);
+        final Button button_eliminar_deudor = dialogUD.findViewById(R.id.button_eliminar_update);
+        final Button button_salir = dialogUD.findViewById(R.id.button_salir_update);
 
         textView_IdDeudor.setText(textView_IdDeudor.getText()+" "+deudor.getIdDeudor());
         textInputLayout_nombre_deudor.getEditText().setText(deudor.getNombre());
@@ -238,7 +240,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
                                 Log.e("Response", response);
                                 if(response.equals("deudor modificado"))
                                 {
-                                    dialog.dismiss();
+                                    dialogUD.dismiss();
                                     progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "¡Se ha actualizado con exito el deudor!", Toast.LENGTH_SHORT).show();
                                     obtenerDatosBD();
@@ -255,7 +257,7 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actulizado el deudor!", Toast.LENGTH_SHORT).show();
                         }
                     });
                     requestQueue.add(respuesta);
@@ -268,53 +270,192 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
         button_eliminar_deudor.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestQueue = Volley.newRequestQueue(CrudActivity.this);
-                progressDialog= new ProgressDialog(CrudActivity.this);
-                progressDialog.setMessage("Eliminando...");
-                progressDialog.show();
 
-                String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/baja.php?IdDeudor="+deudor.getIdDeudor();
-                StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                AlertDialog.Builder dialogConfirm = new AlertDialog.Builder(CrudActivity.this);
+                dialogConfirm.setTitle("Eliminar Cliente");
+                dialogConfirm.setMessage("¿Esta seguro de borrar a "+deudor.getNombre().trim()+" "+deudor.getApellidos()+"?");
+                dialogConfirm.setCancelable(false);
+                dialogConfirm.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(String response) {
-                        try {
-                            if(response.trim().equals("Eliminado"))
-                            {
-                                dialog.dismiss();
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "¡Se ha eliminado con exito el deudor!", Toast.LENGTH_SHORT).show();
-                                obtenerDatosBD();
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                        progressDialog= new ProgressDialog(CrudActivity.this);
+                        progressDialog.setMessage("Eliminando...");
+                        progressDialog.show();
+
+                        String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/baja.php?IdDeudor="+deudor.getIdDeudor();
+                        StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    if(response.trim().equals("Eliminado"))
+                                    {
+                                        dialogUD.dismiss();
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "¡Se ha eliminado con exito el deudor!", Toast.LENGTH_SHORT).show();
+                                        obtenerDatosBD();
+                                    }
+                                    else
+                                    {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            else
-                            {
-                                progressDialog.dismiss();
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha eliminado el deudor!", Toast.LENGTH_SHORT).show();
+                        });
+                        requestQueue.add(respuesta);
                     }
                 });
-                requestQueue.add(respuesta);
+                dialogConfirm.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialogConfirm.show();
             }
         });
 
         button_salir.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                dialogUD.dismiss();
             }
         });
     }
 
-    private void showDialogAbonar(Deudor deudor, int position)
+    private void showDialogAbonar(Deudor deudor)
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
 
+        View view =inflater.inflate(R.layout.dialog_deuda, null);
+        builder.setView(view).setTitle("Registrar deudor");
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final TextView textView_cliente_deuda = dialog.findViewById(R.id.textView_cliente_deuda);
+        final TextView textView_saldo_deuda = dialog.findViewById(R.id.textView_saldo_deuda);
+        final TextInputLayout textInputLayout_saldos_deuda = dialog.findViewById(R.id.textInputLayout_saldos_deuda);
+        final Button button_abonar_deuda = dialog.findViewById(R.id.button_abonar_deuda);
+        final Button button_sumar_deuda = dialog.findViewById(R.id.button_sumar_deuda);
+        final Button button_salir_deuda = dialog.findViewById(R.id.button_salir_deuda);
+
+        textView_cliente_deuda.setText(textView_cliente_deuda.getText()+deudor.getNombre().trim()+" "+deudor.getApellidos());
+        textView_saldo_deuda.setText(textView_saldo_deuda.getText()+"$"+deudor.getSaldoDeudor());
+
+        button_abonar_deuda.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!textInputLayout_saldos_deuda.getEditText().getText().toString().isEmpty()){
+                    if(deudor.getSaldoDeudor()>=Double.parseDouble(textInputLayout_saldos_deuda.getEditText().getText().toString())){
+                        deudor.setSaldoDeudor(deudor.getSaldoDeudor()-Double.parseDouble(textInputLayout_saldos_deuda.getEditText().getText().toString()));
+                        requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                        progressDialog= new ProgressDialog(CrudActivity.this);
+                        progressDialog.setMessage("Actualizando...");
+                        progressDialog.show();
+
+                        String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/abonos.php?IdDeudor="+deudor.getIdDeudor()+"&SaldoDeudor="+deudor.getSaldoDeudor()+
+                                "&FechaUltimaCompra="+Constantes.obtenerFecha();
+
+                        StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    Log.e("Response", response);
+                                    if(response.equals("abono o incremento realizado"))
+                                    {
+                                        dialog.dismiss();
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "¡Sea realizado el abono correctamente!", Toast.LENGTH_SHORT).show();
+                                        obtenerDatosBD();
+                                    }
+                                    else
+                                    {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actualizado la deuda!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actualizado la deuda!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        requestQueue.add(respuesta);
+                    }else {
+                        textInputLayout_saldos_deuda.setError("La cantidad ingresada supera la deuda acumulada");
+                    }
+                }else {
+                   textInputLayout_saldos_deuda.setError("Campo vacío");
+                }
+            }
+        });
+
+        button_sumar_deuda.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!textInputLayout_saldos_deuda.getEditText().getText().toString().isEmpty()){
+                    deudor.setSaldoDeudor(deudor.getSaldoDeudor()+Double.parseDouble(textInputLayout_saldos_deuda.getEditText().getText().toString()));
+                    requestQueue = Volley.newRequestQueue(CrudActivity.this);
+                    progressDialog= new ProgressDialog(CrudActivity.this);
+                    progressDialog.setMessage("Actualizando...");
+                    progressDialog.show();
+
+                    String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/abonos.php?IdDeudor="+deudor.getIdDeudor()+"&SaldoDeudor="+deudor.getSaldoDeudor()+
+                            "&FechaUltimaCompra="+Constantes.obtenerFecha();
+                    StringRequest respuesta = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.e("Response", response);
+                                if(response.equals("abono o incremento realizado"))
+                                {
+                                    dialog.dismiss();
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "¡Sea realizado el incremento de la deuda!", Toast.LENGTH_SHORT).show();
+                                    obtenerDatosBD();
+                                }
+                                else
+                                {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actualizado la deuda!", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "¡Error!, ¡No se ha actualizado la deuda!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    requestQueue.add(respuesta);
+                }else {
+                    textInputLayout_saldos_deuda.setError("Campo vacío");
+                }
+            }
+        });
+
+        button_salir_deuda.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void showDialogAddDeudor(){
@@ -520,6 +661,8 @@ public class CrudActivity extends AppCompatActivity implements Response.Listener
             deudor.setObservaciones(jsonArray.getJSONObject(i).getString("Observaciones"));
 
             listaDeudores.add(deudor);
+
+
 
             String registro = "Nombre: " + deudor.getNombre() + "\n" +
                     "Saldo deudor: " + deudor.getSaldoDeudor() + "\n";

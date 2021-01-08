@@ -3,20 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_cliente_deuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/cliente"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView_saldo_deuda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/saldo_de_la_deuda"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
+
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_saldos_deuda"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +46,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_abonar_deuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -43,7 +56,7 @@
         android:text="@string/abonar_al_saldo_deudor" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button_sumar_deuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -53,7 +66,7 @@
         android:text="@string/sumar_al_saldo_deudor" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/button_salir_deuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
