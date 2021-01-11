@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(MainActivity.this,"Error en la BD",Toast.LENGTH_SHORT).show();
             }
         });
         requestQueueLogin.add(respuesta);
@@ -205,10 +205,11 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
                     progressDialogSign.setMessage("Cargando...");
                     progressDialogSign.show();
                     String url = "https://proyectobasedatositsu.000webhostapp.com/Servicios/signup.php?username="+textInputLayout_usuario_sign.getEditText().getText().toString()+
-                            "&pass="+textInputLayout_pass_sign.getEditText().getText().toString();
+                         "&pass="+textInputLayout_pass_sign.getEditText().getText().toString();
+
                     url = url.replace(" ","%20");
 
-                    jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,MainActivity.this,MainActivity.this);
+                    jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,url,null,MainActivity.this,MainActivity.this);
                     requestQueueSign.add(jsonObjectRequest);
 
                     dialog.dismiss();
@@ -222,14 +223,18 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(MainActivity.this,"Error en la bd", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this,"Error en la bd "+error.toString(), Toast.LENGTH_SHORT).show();
         progressDialogSign.hide();
         Log.i("ERROR", error.toString());
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        Toast.makeText(MainActivity.this,"Registro guardado", Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(MainActivity.this,"Registro guardado", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         progressDialogSign.hide();
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Registro de deudores</string>
+    <string name="app_name">Mi tiendita</string>
     <string name="lista_de_deudas">Lista de deudas</string>
     <string name="todo">TODO</string>
     <string name="login">Iniciar Sesión</string>
@@ -40,4 +40,11 @@
     <string name="actualizar_datos">Actualizar datos</string>
     <string name="consultar_informaci_n">Consultar información</string>
     <string name="abonos_o_incrementos">Abonos o incrementos</string>
+    <string name="integrantes">Integrantes:</string>
+    <string name="contreras_villanueva_angel">Contreras Villanueva Angel</string>
+    <string name="vieyra_contreras_abel">Vieyra Contreras Abel</string>
+    <string name="pulido_virrueta_antonio_de_jes_s">Pulido Virrueta Antonio de Jesús</string>
+    <string name="morado_quiroz_salvador">Morado Quiroz Salvador</string>
+    <string name="taller_de_base_de_datos">Taller de base de datos</string>
+    <string name="polarindustries">PolarIndustries</string>
 </resources>
